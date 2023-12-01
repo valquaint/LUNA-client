@@ -3,11 +3,17 @@ import { useParams } from 'react-router';
 import ExploreContainer from '../components/ExploreContainer';
 import './Page.css';
 
-const Page: React.FC = () => {
+interface IPageProps<T> {
+  isOnline: Boolean
+}
+
+type PageI<T = any> = React.FC<IPageProps<T>>
+
+const Page: PageI = ({isOnline}) => {
 
   const { name } = useParams<{ name: string; }>();
 
-  return (
+  return ( isOnline ? 
     <IonPage>
       <IonHeader>
         <IonToolbar>
@@ -27,6 +33,10 @@ const Page: React.FC = () => {
         <ExploreContainer name={name} />
       </IonContent>
     </IonPage>
+    :
+    <div>
+      You must be online to use this.
+    </div>
   );
 };
 

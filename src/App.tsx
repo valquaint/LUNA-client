@@ -22,10 +22,38 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
+import { useEffect, useState } from 'react';
 
 setupIonicReact();
-
+function ping(): Promise<Boolean> {
+  return new Promise(async (resolve) => {
+    try {
+      
+      const ping = await fetch(`${import.meta.env.VITE_SERVER_URL}/ping`).catch((err) => {
+        console.log(err);
+      })
+      if (typeof ping === "object" && ping.status === 200) {
+        resolve(true);
+      } else {
+        resolve(false);
+      }
+    } catch (err) {
+      resolve(false);
+    }
+  })
+}
 const App: React.FC = () => {
+
+  const [online, setOnline] = useState<Boolean>(false);
+
+  useEffect( () => {
+    async function act() {
+      const isOnline = await ping();
+      setOnline(isOnline)
+    }
+    act();
+  })
+
   return (
     <IonApp>
       <IonReactRouter>
@@ -33,10 +61,10 @@ const App: React.FC = () => {
           <Menu />
           <IonRouterOutlet id="main">
             <Route path="/" exact={true}>
-              <Redirect to="/folder/Inbox" />
+              <Redirect to="/folder/Home" />
             </Route>
             <Route path="/folder/:name" exact={true}>
-              <Page />
+              <Page isOnline={online}/>
             </Route>
           </IonRouterOutlet>
         </IonSplitPane>
