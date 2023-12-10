@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import './Page.css';
 import { Preferences } from '@capacitor/preferences';
-import { Redirect } from 'react-router-dom';
 
 interface IPageProps<T> {
     setVerified:Function
@@ -38,7 +37,7 @@ const Login: PageI = ({setVerified}) => {
                             "l-app-version": import.meta.env.VITE_APP_VERSION
                         }
                     });
-                const { token, refresh, result, msg } = await doLogin.json();
+                const { token, refresh, result, msg, colony_name, username, faction_name } = await doLogin.json();
                 if (result && result === "FAIL") {
                     setToastMessage(msg);
                     setToast(true);
@@ -51,6 +50,10 @@ const Login: PageI = ({setVerified}) => {
                     await Preferences.set({
                         key: 'tokens',
                         value: JSON.stringify(tokens),
+                    });
+                    await Preferences.set({
+                        key: 'userdata',
+                        value: JSON.stringify({ faction_name: faction_name, colony_name, username }),
                     });
                     setVerified(true);
                 }
@@ -91,7 +94,6 @@ const Login: PageI = ({setVerified}) => {
                         <IonInput
                             label="Email Address"
                             labelPlacement="stacked"
-                            clearInput={true}
                             placeholder="Email"
                             value=""
                             type="email"
@@ -109,6 +111,7 @@ const Login: PageI = ({setVerified}) => {
                         ></IonInput>
                     </IonItem>
                     <IonButton onClick={login}>Login</IonButton>
+                    <IonButton routerLink="/Register">Register</IonButton>
                     <IonToast
                         isOpen={toast}
                         message={toastMessage}

@@ -1,5 +1,5 @@
 {
-  "name": "LUNA",
+  "name": "luna",
   "private": true,
   "version": "0.0.1",
   "type": "module",
@@ -52,5 +52,5 @@
     "vite": "^5.0.0",
     "vitest": "^0.34.6"
   },
-  "description": "An Ionic project"
+  "description": "L.U.N.A. - Light Unbound - New Archons"
 }

@@ -1,10 +1,9 @@
 import { IonApp, IonRouterOutlet, IonSplitPane, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { Redirect, Route } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { Redirect, Route, Switch } from 'react-router-dom';
+import { useEffect, useState, useContext } from 'react';
 import Menu from './components/Menu';
-import Page from './pages/Page';
-import Login from './pages/Login';
+import {LunaProvider} from './utils/contexts';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -27,9 +26,14 @@ import './theme/variables.css';
 
 /* Capacitor Plugins */
 import { Preferences } from '@capacitor/preferences';
+import Register from './pages/Register';
+import Home from './pages/Home';
+import Login from './pages/Login';
+import Colony from './pages/Colony';
+import Logout from './pages/Logout';
 
 setupIonicReact();
-function ping(): Promise<Boolean> {
+function ping(): Promise<boolean> {
   return new Promise(async (resolve) => {
     try {
       
@@ -46,9 +50,41 @@ function ping(): Promise<Boolean> {
     }
   })
 }
+
+type userDetails = {
+  colony_name:string,
+  currency:number,
+  faction_name:string,
+  faction_resource:number,
+  ucr:number,
+  username:string
+}
+function pull(): Promise<userDetails|null> {
+  return new Promise( async (resolve) => {
+    
+    const { value } = await Preferences.get({ key: 'tokens' });
+    if(value){
+      const {access, refresh} = JSON.parse(value);
+    try {
+      const details = await fetch(`${import.meta.env.VITE_SERVER_URL}/user`,{
+        method:"POST",
+          headers: {
+            "x-access-token":access,
+            "x-refresh-token":refresh
+          }
+      })
+      const result = await details.json();
+      console.log("Pull Result:", result)
+      resolve(result)
+    }catch (err){
+      resolve(null)
+    }
+  }
+  })
+}
 const App: React.FC = () => {
 
-  const [online, setOnline] = useState<Boolean>(false);
+  const [online, setOnline] = useState<boolean>(false);
 
   useEffect( () => {
     async function act() {
@@ -56,7 +92,7 @@ const App: React.FC = () => {
       setOnline(isOnline)
     }
     act();
-  })
+  }, [setOnline, ping])
 
   const [verified, setVerified] = useState(false);
 
@@ -80,32 +116,53 @@ const App: React.FC = () => {
         });
           setVerified(true);
         }else{
-          await Preferences.remove({ key: "tokens"}).catch(console.log);
           setVerified(false);
+          await Preferences.remove({ key: "tokens"}).catch(console.log);
+          await Preferences.remove({ key: "userdata"}).catch(console.log);
         }
         
       }else{
+        const { value } = await Preferences.get({ key: 'userdata' });
+        if(value) await Preferences.remove({ key: "userdata"}).catch(console.log);
         setVerified(false);
       }
     }
     checkVerified();
-  })
+  },[setVerified])
 
   return (
     <IonApp>
       <IonReactRouter>
-        { !verified && <Login setVerified={setVerified}/> }
-        {verified && <IonSplitPane contentId="main"> 
+        { !verified &&
+        <IonRouterOutlet id="main"><Switch>
+        <Route path="/Register" exact={true}>
+          <Register setVerified={setVerified} />
+        </Route>
+        <Route path="/" exact={true}>
+          <Login setVerified={setVerified}/>
+        </Route>
+        <Route path="*">
+          <Redirect to="/"/>
+        </Route></Switch>
+      </IonRouterOutlet>
+        }
+        {verified && <LunaProvider state={online} updater={setOnline} ping={ping} pull={pull} post={pull}><IonSplitPane contentId="main"> 
           <Menu /> 
           <IonRouterOutlet id="main">
-            <Route path="/" exact={true}>
-              <Redirect to="/folder/Home" />
+            <Route path="/Home" exact={true}>
+              <Home/>
             </Route>
-            <Route path="/folder/:name" exact={true}>
-              <Page isOnline={online}/>
+            <Route path="/Colony" exact={true}>
+              <Colony/>
+            </Route>
+            <Route path="/Logout" exact={true}>
+              <Logout update={setVerified}/>
+            </Route>
+            <Route path="/" exact={true}>
+              <Home/>
             </Route>
           </IonRouterOutlet>
-        </IonSplitPane> }
+        </IonSplitPane></LunaProvider> }
       </IonReactRouter>
     </IonApp>
   );

@@ -1,0 +1,36 @@
+ion-card-subtitle.faction-short {
+    font-style: italic;
+}
+
+ion-chip.register-faction {
+    width: auto;
+    height: 3em;
+    padding-left: 0;
+}
+
+ion-label.register-faction {
+    font-size: 1.5em;
+    width: auto;
+    padding-left: .5em;
+}
+
+.faction-chip {
+    height: 4em;
+}
+
+.faction-chip ion-avatar{
+    width: 3.5em;
+    height: 3.5em;
+    border: 0.2em solid grey;
+}
+
+.resource-bar ion-chip {
+    margin-left: 0;
+    width: auto;
+}
+
+ion-progress-bar.resource-bar {
+    --background: var(--ion-color-danger);
+    --progress-background: var(--ion-color-success);
+    height: 2rem;
+}
