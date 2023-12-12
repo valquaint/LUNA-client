@@ -19,11 +19,7 @@ export const Expedition: ExpeditionI = ({ trigger }) => {
     const [closeTask] = useIonActionSheet();
     const [buffer, setBuffer] = useState(0.1);
     const [progress, setProgress] = useState(0);
-    const [stage, setStage] = useState(0);
-    const online = useContext(LunaOnlineContext);
-    const dataStore = useContext(LunaOfflineContext);
-    const [factionData, setFactionData] = useState<any>();
-    const [faction, setFaction] = useState("");
+    const [stage, setStage] = useState(1);
     const [resource, setResource] = useState(0);
     const [sendResource, setSendResource] = useState(0);
     const [ucr, setUcr] = useState(0);
@@ -31,9 +27,11 @@ export const Expedition: ExpeditionI = ({ trigger }) => {
     const [crew, setCrew] = useState(0);
     const [sendCrew, setSendCrew] = useState(0);
 
-    const onWillPresent = () => {
-        setCanDismissOverride(false);
-    }
+
+    const online = useContext(LunaOnlineContext);
+    const dataStore = useContext(LunaOfflineContext);
+    const [factionData, setFactionData] = useState<any>();
+    const [faction, setFaction] = useState("");
 
     useEffect(() => {
         online.ping().then(async () => {
@@ -48,7 +46,9 @@ export const Expedition: ExpeditionI = ({ trigger }) => {
             }
         });
     })
-
+    const onWillPresent = () => {
+        setCanDismissOverride(false);
+    }
     const canDismiss = async () => {
         if (canDismissOverride) {
             return true;

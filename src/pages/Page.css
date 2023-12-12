@@ -29,8 +29,34 @@ ion-label.register-faction {
     width: auto;
 }
 
-ion-progress-bar.resource-bar {
+.resource-progress-bar ion-note {
+    padding: 0 0.2rem 0.2rem 0.2rem;
+    margin: 0.2rem 0.2rem 0 0.2rem;
+}
+
+.resource-progress-bar ion-label {
+    padding: 0 0.2rem 0.4rem 0.2rem;
+    margin: 0 0.2rem 0.4rem 0.2rem;
+}
+
+.resource-progress-bar > * >
+ion-progress-bar{
     --background: var(--ion-color-danger);
     --progress-background: var(--ion-color-success);
-    height: 2rem;
+    height: 1rem;
+
+}
+.resource-progress-bar > * >
+::part(stream) {
+    background: #00000000;
+}
+
+.resource-progress-bar > ion-note:nth-child(1){
+    justify-content:  right;
+    color: #0f8;
+    width: 20px;
+}
+
+.resource-progress-bar > ion-note:nth-child(even){
+    justify-content:  left;
 }

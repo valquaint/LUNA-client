@@ -3,7 +3,7 @@ import { IonReactRouter } from '@ionic/react-router';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { useEffect, useState, useContext } from 'react';
 import Menu from './components/Menu';
-import {LunaProvider} from './utils/contexts';
+import {LunaProvider, LunaResourceProvider} from './utils/contexts';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -31,6 +31,8 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Colony from './pages/Colony';
 import Logout from './pages/Logout';
+import Faction from './pages/Faction';
+import Shop from './pages/Shop';
 
 setupIonicReact();
 function ping(): Promise<boolean> {
@@ -146,7 +148,7 @@ const App: React.FC = () => {
         </Route></Switch>
       </IonRouterOutlet>
         }
-        {verified && <LunaProvider state={online} updater={setOnline} ping={ping} pull={pull} post={pull}><IonSplitPane contentId="main"> 
+        {verified && <LunaResourceProvider update={pull}><LunaProvider state={online} updater={setOnline} ping={ping} pull={pull} post={pull}><IonSplitPane contentId="main"> 
           <Menu /> 
           <IonRouterOutlet id="main">
             <Route path="/Home" exact={true}>
@@ -155,6 +157,12 @@ const App: React.FC = () => {
             <Route path="/Colony" exact={true}>
               <Colony/>
             </Route>
+            <Route path="/Faction" exact={true}>
+              <Faction/>
+            </Route>
+            <Route path="/Shop" exact={true}>
+              <Shop/>
+            </Route>
             <Route path="/Logout" exact={true}>
               <Logout update={setVerified}/>
             </Route>
@@ -162,7 +170,7 @@ const App: React.FC = () => {
               <Home/>
             </Route>
           </IonRouterOutlet>
-        </IonSplitPane></LunaProvider> }
+        </IonSplitPane></LunaProvider></LunaResourceProvider> }
       </IonReactRouter>
     </IonApp>
   );

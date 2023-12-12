@@ -14,6 +14,43 @@ export function LunaProvider({ children, state, updater, ping, pull, post }: { c
     return (<LunaOnlineContext.Provider value={context}>{children}</LunaOnlineContext.Provider>)
 }
 
+type ResourceContext = {
+    currency: number,
+    ucr: number,
+    fac_res: number,
+    population: number,
+    water: number,
+    power: number,
+    powerOut: number,
+    waterOut: number,
+    update: Function,
+}
+export const LunaResourceContext = createContext<ResourceContext>({ currency: 0 , ucr: 0, fac_res: 0, population: 0, water: 0, power: 0, powerOut: 0, waterOut: 0, update: () => {} });
+
+export function LunaResourceProvider({ children, update }: { children:ReactNode, update: Function }) {
+    const [currency, setCurrency] = useState(0);
+    const [ucr, setUcr] = useState(0);
+    const [fac_res, setFac_res] = useState(0);
+    const [population, setPopulation] = useState(0);
+    const [water, setWater] = useState(0);
+    const [power, setPower] = useState(0);
+    const [powerOut, setPowerOut] = useState(0);
+    const [waterOut, setWaterOut] = useState(0);
+    const updater = async () => {
+        const result = await update();
+        setCurrency(result.currency);
+        setUcr(result.ucr);
+        setFac_res(result.faction_resource);
+        setWater(result.water);
+        setPower(result.power);
+        setPowerOut(result.cost.power);
+        setWaterOut(result.cost.water);
+        return true;
+    }
+    const context = { currency, ucr, fac_res, population, water, power, powerOut, waterOut, update: updater };
+    return (<LunaResourceContext.Provider value={context}>{children}</LunaResourceContext.Provider>)
+}
+
 type OfflineContext = {
     state:any,
     pull: Function

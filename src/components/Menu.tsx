@@ -13,7 +13,7 @@ import {
 } from '@ionic/react';
 
 import { Link, useHistory, useLocation } from 'react-router-dom';
-import { archiveOutline, archiveSharp, bookmarkOutline, heartOutline, heartSharp, homeOutline, homeSharp, mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, trailSign, trailSignSharp, trashOutline, trashSharp, warningOutline, warningSharp } from 'ionicons/icons';
+import { archiveOutline, archiveSharp, bookmarkOutline, heartOutline, heartSharp, homeOutline, homeSharp, mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, storefrontOutline, storefrontSharp, trailSign, trailSignSharp, trashOutline, trashSharp, warningOutline, warningSharp } from 'ionicons/icons';
 import './Menu.css';
 import { useContext, useEffect, useState } from 'react';
 import { Preferences } from '@capacitor/preferences';
@@ -38,6 +38,12 @@ const appPages: AppPage[] = [
     url: '/Colony',
     iosIcon: paperPlaneOutline,
     mdIcon: paperPlaneSharp
+  },
+  {
+    title: 'Or-bitz',
+    url: '/Shop',
+    iosIcon: storefrontOutline,
+    mdIcon: storefrontSharp
   },
   {
     title: 'Faction',

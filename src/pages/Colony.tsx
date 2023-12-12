@@ -3,7 +3,7 @@ import './Page.css';
 import Resources from '../components/Resources';
 import PageHeader from '../components/PageHeader';
 import { useContext, useEffect, useState } from 'react';
-import { LunaOfflineContext, LunaOnlineContext } from '../utils/contexts';
+import { LunaOfflineContext, LunaOnlineContext, LunaResourceContext } from '../utils/contexts';
 import { AlertPanel } from '../components/AlertPanel';
 
 interface IPageProps<T> {
@@ -13,11 +13,11 @@ type PageI<T = any> = React.FC<IPageProps<T>>
 
 const Colony: PageI = () => {
     const online = useContext(LunaOnlineContext);
-    const [currency, setCurrency] = useState(0);
     const dataStore = useContext(LunaOfflineContext);
     const [factionData, setFactionData] = useState<any>();
     const [faction, setFaction] = useState("");
 
+    const MyResources = useContext(LunaResourceContext);
 
     useEffect(() => {
         if (typeof dataStore.state?.find === "function") {
@@ -29,35 +29,40 @@ const Colony: PageI = () => {
         console.log("Colony")
         online.pull().then((result: any) => {
             console.log(result);
-            setCurrency(result.currency)
             setFaction(result.faction_name)
         });
+        
+        MyResources.update().then(() => {
+            console.log("Resources update.");
+        })
     })
     return (online.state ? <>
         <IonPage><PageHeader title={"My Colony"} />
             <IonContent>
                 L.U.N.A is in early development. -- Colony
                 <AlertPanel header="Power" title='Power Production and Usage'>
-                    <IonItem>
-                        <IonNote slot="start">0</IonNote>
+                    <IonItem className='resource-progress-bar'>
+                        <IonNote slot="start">{MyResources.power}</IonNote>
                         <IonLabel>
-                            <IonProgressBar value={0.5} buffer={1} className='resource-bar' ></IonProgressBar>
+                            <IonProgressBar value={MyResources.power / (MyResources.powerOut * 2)} buffer={1}></IonProgressBar>
                         </IonLabel>
-                        <IonNote slot="end">0</IonNote>
+                        <IonNote slot="end">{MyResources.powerOut}</IonNote>
                     </IonItem>
                     <IonLabel>
-                        Power Consumers: 0
+                        Power Efficiency: {((MyResources.power / (MyResources.powerOut))* 100).toFixed(2)}%
                     </IonLabel>
                 </AlertPanel>
                 <AlertPanel header="Water" title='Water Production and Usage'>
-                    <IonList>
+                    <IonItem className='resource-progress-bar'>
+                        <IonNote slot="start">{MyResources.water}</IonNote>
                         <IonLabel>
-                            <IonProgressBar value={0.5} buffer={1} className='resource-bar' />
+                            <IonProgressBar value={MyResources.water / (MyResources.waterOut * 2)} buffer={1}></IonProgressBar>
                         </IonLabel>
-                        <IonLabel>
-                            Water Consumers: 0
-                        </IonLabel>
-                    </IonList>
+                        <IonNote slot="end">{MyResources.waterOut}</IonNote>
+                    </IonItem>
+                    <IonLabel>
+                        Water Efficiency: {((MyResources.water / (MyResources.waterOut))* 100).toFixed(2)}%
+                    </IonLabel>
                 </AlertPanel>
                 <AlertPanel header="Colonists" title='Population'>
                     <IonList>
@@ -78,15 +83,23 @@ const Colony: PageI = () => {
                                 <img alt={`Archon's Notes Image`} src="https://reisama.net/assets/RESOURCE_currency.png" />
                             </IonThumbnail>
                             <IonLabel>
-                                Archon's Notes: {currency || 0}
+                                Archon's Notes: {MyResources.currency || 0}
                             </IonLabel>
                         </IonItem>
                         <IonItem>
                             <IonThumbnail slot='start' >
-                                <img alt={`${faction} Currency Image`} src="https://reisama.net/assets/RESOURCE_currency.png" />
+                                <img alt={`${faction} Resource Image`} src={`https://reisama.net/assets/UCR_${faction}.png`} />
                             </IonThumbnail>
                             <IonLabel>
-                                {faction}'s Currency: {currency || 0}
+                                {factionData.ucr_name}: {MyResources.ucr || 0}
+                            </IonLabel>
+                        </IonItem>
+                        <IonItem>
+                            <IonThumbnail slot='start' >
+                                <img alt={`${faction} Construction Resource Image`} src={`https://reisama.net/assets/RESOURCE_${faction}.png`} />
+                            </IonThumbnail>
+                            <IonLabel>
+                                {factionData.resource_name}: {MyResources.fac_res || 0}
                             </IonLabel>
                         </IonItem>
                     </IonList>

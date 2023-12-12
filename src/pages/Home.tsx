@@ -2,7 +2,7 @@ import { IonAvatar, IonButton, IonButtons, IonCard, IonCardContent, IonCardHeade
 import './Page.css';
 import Resources from '../components/Resources';
 import PageHeader from '../components/PageHeader';
-import { LunaOnlineContext } from '../utils/contexts';
+import { LunaOnlineContext, LunaResourceContext } from '../utils/contexts';
 import { useContext, useEffect, useState } from 'react';
 import { AlertPanel } from '../components/AlertPanel';
 import { Expedition } from '../components/Expedition';
@@ -14,10 +14,10 @@ type PageI<T = any> = React.FC<IPageProps<T>>
 
 const Home: PageI = () => {
     const online = useContext(LunaOnlineContext);
-    const [facResource, setFacResource] = useState(0)
     const [colonyName, setColonyName] = useState("");
     const [faction, setFaction] = useState("");
 
+    const MyResources = useContext(LunaResourceContext);
 
     
     console.log(online.state);
@@ -25,17 +25,19 @@ const Home: PageI = () => {
         console.log("Home")
         online.pull().then((result: any) => {
             console.log(result);
-            setFacResource(result.faction_resource);
             setColonyName(result.colony_name);
             setFaction(result.faction_name);
             console.log("Faction set to", faction)
+            MyResources.update().then(() => {
+                console.log("Resources update.");
+            })
         });
     })
     
     return (online.state ? <>
         <IonPage><PageHeader title={"Home"} />
             <IonContent>
-                <Resources power={40} water={50} population={100} f_resource={facResource}/>
+                <Resources power={MyResources.power || 0} water={MyResources.water || 0} population={MyResources.population || 0} f_resource={MyResources.fac_res || 0}/>
                 L.U.N.A is in early development.
                 <IonList id="register">
                     <AlertPanel header='At A Glance' title={colonyName} subtitle={"You must construct additional pylons..."}>Blah</AlertPanel>
