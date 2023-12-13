@@ -281,26 +281,26 @@ const Register: PageI = ({ setVerified }) => {
                                         <IonAccordionGroup>
                                             <IonAccordion value="first">
                                                 <IonItem slot="header" color="primary">
-                                                    <IonLabel>First Accordion</IonLabel>
+                                                    <IonLabel>First Skill</IonLabel>
                                                 </IonItem>
                                                 <div className="ion-padding" slot="content">
-                                                    First Skill
+                                                    Description TBD
                                                 </div>
                                             </IonAccordion>
                                             <IonAccordion value="second">
                                                 <IonItem slot="header" color="primary">
-                                                    <IonLabel>Second Accordion</IonLabel>
+                                                    <IonLabel>Second Skill</IonLabel>
                                                 </IonItem>
                                                 <div className="ion-padding" slot="content">
-                                                    Second Skill
+                                                    Description TBD
                                                 </div>
                                             </IonAccordion>
                                             <IonAccordion value="third">
                                                 <IonItem slot="header" color="primary">
-                                                    <IonLabel>Third Accordion</IonLabel>
+                                                    <IonLabel>Third Skill</IonLabel>
                                                 </IonItem>
                                                 <div className="ion-padding" slot="content">
-                                                    Third Skill
+                                                    Description TBD
                                                 </div>
                                             </IonAccordion>
                                         </IonAccordionGroup>

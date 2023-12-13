@@ -1,4 +1,4 @@
-import { IonAvatar, IonButtons, IonContent, IonHeader, IonItem, IonLabel, IonList, IonMenuButton, IonNote, IonPage, IonProgressBar, IonThumbnail, IonTitle, IonToolbar } from '@ionic/react';
+import { IonAvatar, IonButtons, IonCardSubtitle, IonContent, IonHeader, IonItem, IonLabel, IonList, IonMenuButton, IonNote, IonPage, IonProgressBar, IonThumbnail, IonTitle, IonToolbar } from '@ionic/react';
 import './Page.css';
 import Resources from '../components/Resources';
 import PageHeader from '../components/PageHeader';
@@ -37,37 +37,37 @@ const Colony: PageI = () => {
         })
     })
     return (online.state ? <>
-        <IonPage><PageHeader title={"My Colony"} />
+        {factionData && <IonPage><PageHeader title={"My Colony"} />
             <IonContent>
                 L.U.N.A is in early development. -- Colony
                 <AlertPanel header="Power" title='Power Production and Usage'>
                     <IonItem className='resource-progress-bar'>
-                        <IonNote slot="start">{MyResources.power}</IonNote>
+                        <IonNote slot="start">{MyResources.power || 0}</IonNote>
                         <IonLabel>
-                            <IonProgressBar value={MyResources.power / (MyResources.powerOut * 2)} buffer={1}></IonProgressBar>
+                            <IonProgressBar value={(MyResources.power || 0) / ((MyResources.powerOut || 1) * 2)} buffer={1}></IonProgressBar>
                         </IonLabel>
-                        <IonNote slot="end">{MyResources.powerOut}</IonNote>
+                        <IonNote slot="end">{MyResources.powerOut || 0}</IonNote>
                     </IonItem>
                     <IonLabel>
-                        Power Efficiency: {((MyResources.power / (MyResources.powerOut))* 100).toFixed(2)}%
+                        Power Efficiency: {(((MyResources.power || 0) / (MyResources.powerOut || 1))* 100).toFixed(2)}%
                     </IonLabel>
                 </AlertPanel>
                 <AlertPanel header="Water" title='Water Production and Usage'>
                     <IonItem className='resource-progress-bar'>
-                        <IonNote slot="start">{MyResources.water}</IonNote>
+                        <IonNote slot="start">{MyResources.water || 0}</IonNote>
                         <IonLabel>
-                            <IonProgressBar value={MyResources.water / (MyResources.waterOut * 2)} buffer={1}></IonProgressBar>
+                            <IonProgressBar value={(MyResources.water || 0)  / ((MyResources.waterOut || 1) * 2)} buffer={1}></IonProgressBar>
                         </IonLabel>
-                        <IonNote slot="end">{MyResources.waterOut}</IonNote>
+                        <IonNote slot="end">{MyResources.waterOut || 0}</IonNote>
                     </IonItem>
                     <IonLabel>
-                        Water Efficiency: {((MyResources.water / (MyResources.waterOut))* 100).toFixed(2)}%
+                        Water Efficiency: {(((MyResources.water || 0) / (MyResources.waterOut || 1))* 100).toFixed(2)}%
                     </IonLabel>
                 </AlertPanel>
                 <AlertPanel header="Colonists" title='Population'>
                     <IonList>
                         <IonLabel>
-                            Housing Provided: 0
+                            Housing Provided: {MyResources.population || 0}
                         </IonLabel>
                         <IonLabel>
                             Housing Used: 0
@@ -82,30 +82,33 @@ const Colony: PageI = () => {
                             <IonThumbnail slot='start' >
                                 <img alt={`Archon's Notes Image`} src="https://reisama.net/assets/RESOURCE_currency.png" />
                             </IonThumbnail>
-                            <IonLabel>
-                                Archon's Notes: {MyResources.currency || 0}
-                            </IonLabel>
+                            <IonCardSubtitle>
+                                Archon's Notes
+                            </IonCardSubtitle>
+                            <IonNote slot='end'>{MyResources.currency || 0}</IonNote>
                         </IonItem>
                         <IonItem>
                             <IonThumbnail slot='start' >
                                 <img alt={`${faction} Resource Image`} src={`https://reisama.net/assets/UCR_${faction}.png`} />
                             </IonThumbnail>
-                            <IonLabel>
-                                {factionData.ucr_name}: {MyResources.ucr || 0}
-                            </IonLabel>
+                            <IonCardSubtitle>
+                                {factionData.ucr_name}
+                            </IonCardSubtitle>
+                            <IonNote slot='end'>{MyResources.ucr || 0}</IonNote>
                         </IonItem>
                         <IonItem>
                             <IonThumbnail slot='start' >
                                 <img alt={`${faction} Construction Resource Image`} src={`https://reisama.net/assets/RESOURCE_${faction}.png`} />
                             </IonThumbnail>
-                            <IonLabel>
-                                {factionData.resource_name}: {MyResources.fac_res || 0}
-                            </IonLabel>
+                            <IonCardSubtitle>
+                                {factionData.resource_name}
+                            </IonCardSubtitle>
+                            <IonNote slot='end'>{MyResources.fac_res || 0}</IonNote>
                         </IonItem>
                     </IonList>
                 </AlertPanel>
             </IonContent>
-        </IonPage></>
+        </IonPage>}</>
         :
         <div>
             You must be online to use this.

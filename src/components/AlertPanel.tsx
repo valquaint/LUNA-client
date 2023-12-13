@@ -17,14 +17,14 @@ export const AlertPanel: AlertI = ({ header, title, subtitle, children }) => {
                 <IonLabel>{header}</IonLabel>
             </IonItemDivider>}
             <IonItem>
-                <IonCardHeader>
+                <IonCardHeader className="alert-wide">
                     <IonCardTitle>
                         {title}
                     </IonCardTitle>
                     {subtitle && <IonCardSubtitle color={"secondary"} >
                         {subtitle}
                     </IonCardSubtitle> }
-                    <IonCardContent>{children}</IonCardContent>
+                    {children}
                 </IonCardHeader>
             </IonItem>
         </>

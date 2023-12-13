@@ -33,6 +33,7 @@ import Colony from './pages/Colony';
 import Logout from './pages/Logout';
 import Faction from './pages/Faction';
 import Shop from './pages/Shop';
+import Page from './pages/Page';
 
 setupIonicReact();
 function ping(): Promise<boolean> {
@@ -162,6 +163,12 @@ const App: React.FC = () => {
             </Route>
             <Route path="/Shop" exact={true}>
               <Shop/>
+            </Route>
+            <Route path="/GlobalStats" exact={true}>
+              <Page/>
+            </Route>
+            <Route path="/Settings" exact={true}>
+              <Page/>
             </Route>
             <Route path="/Logout" exact={true}>
               <Logout update={setVerified}/>

@@ -17,7 +17,7 @@ const Page: PageI = () => {
   const online = useContext(LunaOnlineContext);
 
   return (online.state ? <>
-    <IonPage><PageHeader title={"My Colony"} />
+    <IonPage><PageHeader title={""} />
       <IonContent>
         L.U.N.A is in early development.
       </IonContent>

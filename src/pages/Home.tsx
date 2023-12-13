@@ -41,8 +41,8 @@ const Home: PageI = () => {
                 L.U.N.A is in early development.
                 <IonList id="register">
                     <AlertPanel header='At A Glance' title={colonyName} subtitle={"You must construct additional pylons..."}>Blah</AlertPanel>
-                    <AlertPanel header='Expedition' title={"Envoy: Acquire Flxodine"} subtitle={"Our liaisons are ready..."}>
-                        <IonButton id='start-task' expand='block'>Begin Expedition</IonButton>
+                    <AlertPanel header='Activities' title={"Expeditions: Begin an Expedition"} subtitle={"The stars await..."}>
+                        <IonButton id='start-task' expand='block'>Begin Setup</IonButton>
                         <Expedition trigger='start-task'/>
                     </AlertPanel>
                 </IonList>

@@ -46,9 +46,10 @@ const Faction: FactionI = () => {
                         },
                         body: JSON.stringify({ "faction_id": factionData.faction_id })
                     })
-                    const fac_totals = await isValidated.json() as Array<any>;
+                    const fac_totals = (await isValidated.json()).msg as Array<any>;
+                    console.log(fac_totals)
                     const fac_res = fac_totals.reduce((total, current) => total + current.faction_resource, 0);
-                    const fac_currency = fac_totals.reduce((total, current) => total + current.curency, 0);
+                    const fac_currency = fac_totals.reduce((total, current) => total + current.currency, 0);
                     setFactionResource(fac_res);
                     setFactionCurrency(fac_currency);
                 }
@@ -82,16 +83,14 @@ const Faction: FactionI = () => {
                                 <img alt={`Archon's Notes Image`} src={`https://reisama.net/assets/RESOURCE_currency.png`} />
                             </IonThumbnail>
                             <IonLabel>
-                                Total Wealth of {faction}: {factionCurrency || 0}
+                                Archon Notes: {factionCurrency || 0}
                             </IonLabel>
                         </IonItem>
                         <IonItem>
                             <IonThumbnail slot='start' >
-                                <img alt={`${faction} Unique Resource Image`} src={`https://reisama.net/assets/UCR_${faction}.png`} />
+                                <img alt={`${faction} Unique Resource Image`} src={`https://reisama.net/assets/RESOURCE_${faction}.png`} />
                             </IonThumbnail>
-                            <IonLabel>
-                                {faction}'s {factionData.ucr_name} Reserves: {factionResource || 0}
-                            </IonLabel>
+                            <IonLabel>{factionData.resource_name}: {factionResource || 0}</IonLabel>
                         </IonItem>
                     </IonList>
                 </AlertPanel>

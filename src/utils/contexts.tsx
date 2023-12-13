@@ -45,6 +45,7 @@ export function LunaResourceProvider({ children, update }: { children:ReactNode,
         setPower(result.power);
         setPowerOut(result.cost.power);
         setWaterOut(result.cost.water);
+        setPopulation(result.population);
         return true;
     }
     const context = { currency, ucr, fac_res, population, water, power, powerOut, waterOut, update: updater };

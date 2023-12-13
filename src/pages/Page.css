@@ -60,3 +60,31 @@ ion-progress-bar{
 .resource-progress-bar > ion-note:nth-child(even){
     justify-content:  left;
 }
+.alert-wide{
+    width: 90%;
+}
+
+.alert-wide ion-note {
+    width: 10%;
+}
+.expedition-status-bar ion-note {
+    padding: 0 0.2rem 0.2rem 0.2rem;
+    margin: 0.2rem 0.2rem 0 0.2rem;
+    justify-content:  right;
+    width: 20px;
+}
+
+.expedition-status-bar ion-label {
+    padding: 0 0.2rem 0.4rem 0.2rem;
+    margin: 0 0.2rem 0.4rem 0.2rem;
+}
+
+.expedition-status-bar
+ion-progress-bar{
+    --background: var(--ion-color-danger);
+    --progress-background: var(--ion-color-success);
+    height: 1rem;
+}
+.expedition-status-bar ion-progress-bar::part(stream) {
+    background: #00000000;
+}
