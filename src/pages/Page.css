@@ -61,11 +61,13 @@ ion-progress-bar{
     justify-content:  left;
 }
 .alert-wide{
-    width: 90%;
+    width: 98%;
+    padding: 0.5rem;
 }
 
 .alert-wide ion-note {
-    width: 10%;
+    width: 2rem;
+    margin-left: 0.2rem;
 }
 .expedition-status-bar ion-note {
     padding: 0 0.2rem 0.2rem 0.2rem;

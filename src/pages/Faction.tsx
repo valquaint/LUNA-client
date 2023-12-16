@@ -1,4 +1,4 @@
-import { IonButtons, IonContent, IonHeader, IonItem, IonLabel, IonList, IonMenuButton, IonPage, IonThumbnail, IonTitle, IonToolbar } from '@ionic/react';
+import { IonButtons, IonContent, IonHeader, IonItem, IonLabel, IonList, IonMenuButton, IonNote, IonPage, IonThumbnail, IonTitle, IonToolbar } from '@ionic/react';
 import { useParams } from 'react-router';
 import './Page.css';
 import Resources from '../components/Resources';
@@ -29,7 +29,7 @@ const Faction: FactionI = () => {
         online.pull().then((result: any) => {
             console.log("========>", result)
             console.log(result);
-            if(result.faction_name) setFaction(result.faction_name)
+            if (result.faction_name) setFaction(result.faction_name)
         });
         const loadFaction = async () => {
             if (factionData) {
@@ -56,7 +56,7 @@ const Faction: FactionI = () => {
             }
 
         }
-        
+
         if (typeof dataStore.state?.find === "function") {
             const newData = (dataStore.state as Array<any>).find(findfaction => findfaction.faction_name === faction);
             setFactionData(newData);
@@ -64,11 +64,11 @@ const Faction: FactionI = () => {
         }
     });
     // useEffect(() => {
-        
+
     // }, [factionData, setFaction, online])
 
     // useEffect(() => {
-        
+
     // }, [factionData])
 
     return (online.state ? <>
@@ -82,15 +82,21 @@ const Faction: FactionI = () => {
                             <IonThumbnail slot='start' >
                                 <img alt={`Archon's Notes Image`} src={`https://reisama.net/assets/RESOURCE_currency.png`} />
                             </IonThumbnail>
-                            <IonLabel>
-                                Archon Notes: {factionCurrency || 0}
-                            </IonLabel>
+                            <IonLabel className='alert-wide'>Archon Notes</IonLabel>
+                            <IonNote slot='end'>
+                                {factionCurrency || 0}
+                            </IonNote>
                         </IonItem>
                         <IonItem>
                             <IonThumbnail slot='start' >
                                 <img alt={`${faction} Unique Resource Image`} src={`https://reisama.net/assets/RESOURCE_${faction}.png`} />
                             </IonThumbnail>
-                            <IonLabel>{factionData.resource_name}: {factionResource || 0}</IonLabel>
+                            <IonLabel>
+                                {factionData.resource_name}
+                            </IonLabel>
+                            <IonNote slot='end'>
+                                {factionResource || 0}
+                            </IonNote>
                         </IonItem>
                     </IonList>
                 </AlertPanel>

@@ -210,19 +210,19 @@ export const Expedition: ExpeditionI = ({ trigger }) => {
         }
         if (option.randomness) {
             if (option.changes.max_ucr) {
-                gain.ucr = Math.floor(Math.random() * option.changes.max_ucr) + (option.changes.ucr || 0)
+                gain.ucr = Math.floor(Math.random() * (option.changes.max_ucr - (option.changes.ucr || 0)) + (option.changes.ucr || 0));
             }
             if (option.changes.max_resources) {
-                gain.resources = Math.floor(Math.random() * option.changes.max_resources) + (option.changes.resources || 0)
+                gain.resources = Math.floor(Math.random() * (option.changes.max_resources - (option.changes.resources || 0)) + (option.changes.resources || 0));
             }
             if (option.changes.max_crew) {
-                gain.crew = Math.floor(Math.random() * option.changes.max_crew) + (option.changes.crew || 0)
+                gain.crew = Math.floor(Math.random() * (option.changes.max_crew - (option.changes.crew || 0)) + (option.changes.crew || 0));
             }
             if (option.changes.max_time) {
-                gain.time = Math.floor(Math.random() * option.changes.max_time) + (option.changes.time || 0)
+                gain.time = Math.floor(Math.random() * (option.changes.max_time - (option.changes.time || 0)) + (option.changes.time || 0));
             }
             if (option.changes.max_currency) {
-                gain.currency = Math.floor(Math.random() * option.changes.max_currency) + (option.changes.currency || 0)
+                gain.currency = Math.floor(Math.random() * (option.changes.max_currency - (option.changes.currency || 0)) + (option.changes.currency || 0));
             }
         } else {
             if (option.changes.ucr) {
@@ -301,12 +301,12 @@ export const Expedition: ExpeditionI = ({ trigger }) => {
     }
 
     const nextStage = () => {
-        if (stage < 4) {
+        if (stage < 5) {
             setBuffer(buffer + 0.33);
             setProgress(progress + 0.33);
             setStage(stage + 1);
         }
-        if (stage === 3) {
+        if (stage === 4) {
             setBuffer(step);
             setProgress(0);
             setCurrentCrew(sendCrew);
@@ -331,7 +331,7 @@ export const Expedition: ExpeditionI = ({ trigger }) => {
     return <IonModal
         ref={modal}
         trigger={trigger}
-        canDismiss={stage < 4 ? true : canDismiss}
+        canDismiss={stage < 5 ? true : canDismiss}
         initialBreakpoint={1}
         breakpoints={[0, 1]}
         onWillPresent={onWillPresent}
@@ -340,7 +340,7 @@ export const Expedition: ExpeditionI = ({ trigger }) => {
             <IonToolbar>
                 <IonTitle>Expedition</IonTitle>
                 <IonButtons slot="end">
-                    <IonButton onClick={() => dismiss()}>{stage < 4 ? "Cancel Preparation" : "Return Home"}</IonButton>
+                    <IonButton onClick={() => dismiss()}>{stage < 5 ? "Cancel Preparation" : "Return Home"}</IonButton>
                 </IonButtons>
             </IonToolbar>
         </IonHeader>
@@ -349,7 +349,7 @@ export const Expedition: ExpeditionI = ({ trigger }) => {
                 <IonLabel>{stage < 4 ? "Preparation" : "Expedition Progress"}</IonLabel>
                 <IonProgressBar buffer={buffer} value={progress} />
             </IonSegment>
-            {(stage > 0 && stage < 4) && <IonSegment>
+            {(stage > 0 && stage < 5) && <IonSegment>
                 {stage === 1 && <>
                     <IonItemDivider>
                         <IonTitle color={"primary"}>
@@ -468,15 +468,36 @@ export const Expedition: ExpeditionI = ({ trigger }) => {
                         }}
                     ><IonNote slot="end">{expeditionLength}</IonNote></IonRange>
                 </>}
+                
+                {stage === 4 && <>
+                    <IonItemDivider>
+                        <IonTitle color={"primary"}>
+                            Expedition Details
+                        </IonTitle>
+                    </IonItemDivider>
+                    <Description>
+                        Your crew has been tasked with the following expedition:
+                    </Description>
+
+                    <Description>
+                        (TBD)
+                    </Description>
+                    <Description>
+
+                    </Description>
+                    <Description>
+                        The rewards will be as follows:
+                    </Description>
+                </>}
                 <IonButton color={(stage < 3 ? "warning" : "danger")} onClick={nextStage}>{stage < 3 ? "Continue" : "Begin Expedition"}</IonButton>
-                {stage === 3 &&
+                {stage === 4 &&
                     <IonCard>
                         <IonCardTitle color="danger">WARNING:</IonCardTitle>
                         <IonCardSubtitle color="warning">
                             You are about to begin your expedition. Continuing past this point will spend the resources you have previously selected. This cannot be undone!
                         </IonCardSubtitle>
                     </IonCard>}</IonSegment>}
-            {(stage === 4 || stage === 5) &&
+            {(stage === 5 || stage === 6) &&
                 <IonSegment><IonAccordionGroup>
                     <IonAccordion value="stats"><IonItem slot="header" color="light">
                         <IonLabel>Stats</IonLabel>
@@ -537,7 +558,7 @@ export const Expedition: ExpeditionI = ({ trigger }) => {
                             Captain's Log, Day {day}
                         </IonTitle>
                     </IonItemDivider>
-                    {stage === 5 && <IonItemDivider>
+                    {stage === 6 && <IonItemDivider>
                         <IonCardSubtitle color={"tertiary"}>
                             Returning Home
                         </IonCardSubtitle>
@@ -564,7 +585,7 @@ export const Expedition: ExpeditionI = ({ trigger }) => {
                     </IonItemDivider>
 
                 </IonSegment>}
-            {stage === 6 && <IonSegment>
+            {stage === 7 && <IonSegment>
                 <IonItemDivider>
                     <IonTitle color={"primary"}>
                         Expedition Results
